@@ -15,7 +15,7 @@ module.exports = {
         green: '#00CC00',
         red: '#FF0000',
         border: '#D5D5D5',
-        input: '#C0C0C0',
+        input: '#393f54cc',
         taskCompleted: '#1D1D1D',
       },
       borderRadius: {
