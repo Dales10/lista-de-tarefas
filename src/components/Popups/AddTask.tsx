@@ -1,23 +1,20 @@
 import { useState, FormEvent, Dispatch, SetStateAction, MouseEvent } from 'react';
 import Image from 'next/image';
 
-import { TaskProps } from '../../../@types/Task';
-
 type Props = {
-    popupEdit: Dispatch<SetStateAction<boolean>>;
-    taskPosition: number;
+    popupAdd: Dispatch<SetStateAction<boolean>>;
     updateTasks: () => void;
 }
 
-const PopupEditTask = ({ popupEdit, taskPosition, updateTasks }: Props) => {
+const PopupAddTask = ({ popupAdd, updateTasks }: Props) => {
     const positionTop = { top: `${window.pageYOffset}px` };
-    const task: TaskProps = JSON.parse(localStorage.getItem('tasks') || '[]')[taskPosition];
 
-    const [title, setTitle] = useState(task.title);
+    const [title, setTitle] = useState('');
     const [msgErrTitle, setMsgErrTitle] = useState('');
-    const [description, setDescription] = useState(task.description);
+    const [description, setDescription] = useState('');
     const [msgErrDescription, setMsgErrDescription] = useState('');
 
+    //Fará a validacação dos dados, e quando forem validos serão guardados.
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
 
@@ -41,11 +38,12 @@ const PopupEditTask = ({ popupEdit, taskPosition, updateTasks }: Props) => {
             validDescription = true;
         }
 
+        //Adiciona os dados em formato de objeto no localstorage, e limpa os useState.
         if (validTitle && validDescription) {
-            popupEdit(false);
+            popupAdd(false);
 
             const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
-            tasks.splice(taskPosition, 1, {
+            tasks.push({
                 title,
                 description,
                 completed: false,
@@ -57,7 +55,6 @@ const PopupEditTask = ({ popupEdit, taskPosition, updateTasks }: Props) => {
         }
     };
 
-
     const handleClick = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
         const tagNameElement = (e.target as Element).classList[0];
         const closePopup = ['popup-wrapper', 'popup-closeButton'].some(name => {
@@ -65,15 +62,17 @@ const PopupEditTask = ({ popupEdit, taskPosition, updateTasks }: Props) => {
         });
 
         if (closePopup)
-            popupEdit(false);
+            popupAdd(false);
     };
 
     return (
+
         <div
             style={positionTop}
             onClick={e => handleClick(e)}
             className="popup-wrapper w-screen h-screen flex justify-center items-center absolute left-0 bg-black bg-opacity-50"
         >
+
             <form
                 onSubmit={e => handleSubmit(e)}
                 className="max-w-[600px] w-[90%] relative bg-background m-auto border-b border-[#57E6E6] rounded-default"
@@ -92,7 +91,7 @@ const PopupEditTask = ({ popupEdit, taskPosition, updateTasks }: Props) => {
                 </div>
 
                 <h1 className="text-3xl text-center font-bold mt-8">
-                    Editar Tarefa
+                    Criar Tarefa
                 </h1>
 
                 <div className='flex flex-col gap-1 mt-8 ml-7'>
@@ -127,7 +126,7 @@ const PopupEditTask = ({ popupEdit, taskPosition, updateTasks }: Props) => {
                         autoComplete='off'
                         value={description}
                         onChange={e => setDescription(e.target.value)}
-                        className='w-11/12 max-h-40 pt-1 pl-2 bg-input border-b-2 border-[#57E6E6] outline-none'
+                        className='w-11/12 max-h-9 pt-1 pl-2 bg-input border-b-2 border-[#57E6E6] outline-none'
                     />
                     <span className='w-11/12 mt-2 text-red text-xs'>
                         {msgErrDescription}
@@ -139,7 +138,7 @@ const PopupEditTask = ({ popupEdit, taskPosition, updateTasks }: Props) => {
                         type="submit"
                         className="w-[250px] h-12 bg-green rounded-xl font-bold uppercase hover:bg-opacity-80 my-14"
                     >
-                        Salvar
+                        Adicionar
                     </button>
                 </div>
             </form>
@@ -147,4 +146,4 @@ const PopupEditTask = ({ popupEdit, taskPosition, updateTasks }: Props) => {
     );
 };
 
-export default PopupEditTask;
+export default PopupAddTask;

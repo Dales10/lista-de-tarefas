@@ -20,6 +20,7 @@ const Task = ({ task, taskPosition, setTaskPosition, updateTasks, editTask, dele
             return name === tagNameElement;
         });
 
+        //Caso o elemento que tenha sido clicado não tenha sido os botões de editar e deletar, troca o booleano da propriedade completed pelo seu oposto.
         if (!changeState) {
             const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
             tasks.splice(taskPosition, 1, {
@@ -52,6 +53,7 @@ const Task = ({ task, taskPosition, setTaskPosition, updateTasks, editTask, dele
             </div>
 
             <div className='flex flex-col sm:flex-row justify-end items-center gap-3 sm:gap-4 sm:mr-6 p-4 sm:p-0'>
+                {/* Botão de editar tarefa. */}
                 <button
                     type='button'
                     onClick={() => { editTask(true); setTaskPosition(taskPosition) }}
@@ -66,6 +68,7 @@ const Task = ({ task, taskPosition, setTaskPosition, updateTasks, editTask, dele
                     />
                 </button>
 
+                {/* Botão de deletar tarefa. */}
                 <button
                     type='button'
                     onClick={() => { deleteTask(true); setTaskPosition(taskPosition) }}

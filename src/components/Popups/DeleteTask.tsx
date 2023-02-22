@@ -9,7 +9,7 @@ type Props = {
     updateTasks: () => void;
 }
 
-const DeleteTask = ({ popupDelete, taskPosition, updateTasks }: Props) => {
+const PopupDeleteTask = ({ popupDelete, taskPosition, updateTasks }: Props) => {
     const positionTop = { top: `${window.pageYOffset}px` };
     const task: TaskProps = JSON.parse(localStorage.getItem('tasks') || '[]')[taskPosition];
 
@@ -89,4 +89,4 @@ const DeleteTask = ({ popupDelete, taskPosition, updateTasks }: Props) => {
     );
 };
 
-export default DeleteTask;
+export default PopupDeleteTask;
