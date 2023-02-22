@@ -10,13 +10,13 @@ const Home = () => {
   const [popupEdit, setPopupEdit] = useState(false);
   const [popupDelete, setPopupDelete] = useState(false);
   const [tasks, setTasks] = useState([]);
+  const [taskPosition, setTaskPosition] = useState(-1);
 
-  const handleAddingTask = () => {
+  const updateTasks = () => {
     setTasks(
       JSON.parse(localStorage.getItem('tasks') || '[]'),
     );
   };
-
 
   useEffect(() => {
     if (popupEdit || popupDelete)
@@ -26,21 +26,24 @@ const Home = () => {
   }, [popupEdit || popupDelete]);
 
   useEffect(() => {
-    handleAddingTask();
+    updateTasks();
   }, []);
 
   return (
-    <>
-      <h1 className="my-24 text-5xl font-bold text-center">
+    <div className="select-none mb-20">
+      <h1 className="my-10 sm:my-24 text-4xl sm:text-5xl font-bold text-center">
         Minhas Tarefas
       </h1>
 
       <div className="flex flex-col items-center gap-3">
         <AddTask
-          addingTask={handleAddingTask}
+          updateTasks={updateTasks}
         />
+        
         <ShowTasks
           tasks={tasks}
+          setTaskPosition={setTaskPosition}
+          updateTasks={updateTasks}
           editTask={setPopupEdit}
           deleteTask={setPopupDelete}
         />
@@ -50,16 +53,22 @@ const Home = () => {
         popupEdit && (
           <EditTask
             popupEdit={setPopupEdit}
+            taskPosition={taskPosition}
+            updateTasks={updateTasks}
           />
         )
       }
 
       {
         popupDelete && (
-          <DeleteTask />
+          <DeleteTask
+            popupDelete={setPopupDelete}
+            taskPosition={taskPosition}
+            updateTasks={updateTasks}
+          />
         )
       }
-    </>
+    </div>
   );
 };
 

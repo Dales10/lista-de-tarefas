@@ -1,23 +1,31 @@
-import { TasksProps } from '../../../@types/Tasks';
+import { TaskProps } from '../../../@types/Task';
 import { Dispatch, SetStateAction } from 'react';
 
 import Task from "../Task";
 
 type Props = {
-    tasks: TasksProps[];
+    tasks: TaskProps[];
+    setTaskPosition: Dispatch<SetStateAction<number>>;
+    updateTasks: () => void;
     editTask: Dispatch<SetStateAction<boolean>>;
     deleteTask: Dispatch<SetStateAction<boolean>>;
 }
 
-const ShowTasks = ({ tasks, editTask, deleteTask }: Props) => {
+const ShowTasks = ({ tasks, setTaskPosition, updateTasks, editTask, deleteTask }: Props) => {
     return (
-        <div className="flex flex-col justify-center items-center gap-[10px] py-[35px] bg-background w-[1000px] rounded-br-default rounded-bl-default mb-10">
+        <div className="max-w-[1000px] w-11/12 min-w-[300px] flex flex-col justify-center items-center gap-3 py-9 px-4 bg-background rounded-br-default rounded-bl-default">
             {
                 tasks.map((task, index) => {
                     return (
-                        <div key={index}>
+                        <div
+                            key={index}
+                            className='w-full'
+                        >
                             <Task
                                 task={task}
+                                taskPosition={index}
+                                setTaskPosition={setTaskPosition}
+                                updateTasks={updateTasks}
                                 editTask={editTask}
                                 deleteTask={deleteTask}
                             />
