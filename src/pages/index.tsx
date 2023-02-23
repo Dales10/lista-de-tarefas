@@ -18,9 +18,9 @@ const Home = () => {
   const [msgErrsearch, setMsgErrSearch] = useState('');
 
   //Atualiza a lista de tarefas sempre que é chamado.
-  const updateTasks = () => {
-    //Se o estado de completa de uma tarefa tiver mudado, e ao mesmo tempo o mecanismo de busca estiver em uso, volta a exibir as tarefas que possuem a palavra/frase da pesquisa, se não, mostra todas as tarefas do localstorage.
-    if (searchData.length !== 0) {
+  const updateTasks = (isCleanButton?: boolean) => {
+    //Se o campo "completed" de uma tarefa tiver mudado, e ao mesmo tempo o mecanismo de busca estiver em uso e, a função não tiver sido chamada pelo botão de limpar o campo de pesquisa, volta a exibir as tarefas que possuem a palavra/frase da pesquisa, se não, mostra todas as tarefas armazenadas.
+    if (searchData.length !== 0 && !isCleanButton) {
       search(searchData);
     } else {
       setTasks(
@@ -90,6 +90,7 @@ const Home = () => {
           search={search}
           msgErrsearch={msgErrsearch}
           setPopupAdd={setPopupAdd}
+          updateTasks={updateTasks}
         />
 
         {/* Componente responsável por fazer a listagem das tarefas armazenadas. */}

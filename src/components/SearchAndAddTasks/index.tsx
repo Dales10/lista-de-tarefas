@@ -7,9 +7,10 @@ type Props = {
     search: (searchData: string) => void;
     msgErrsearch: string;
     setPopupAdd: Dispatch<SetStateAction<boolean>>;
+    updateTasks: (isCleanButton: boolean) => void;
 }
 
-const AddTask = ({ searchData, setSearchData, search, msgErrsearch, setPopupAdd }: Props) => {
+const AddTask = ({ searchData, setSearchData, search, msgErrsearch, setPopupAdd, updateTasks }: Props) => {
     return (
         <div
             className="max-w-[1000px] w-11/12 min-w-[300px] bg-background pt-1 py-6 rounded-tr-default rounded-tl-default"
@@ -35,7 +36,7 @@ const AddTask = ({ searchData, setSearchData, search, msgErrsearch, setPopupAdd 
                         />
 
                         <div
-                            onClick={() => setSearchData('')}
+                            onClick={() => { setSearchData(''); updateTasks(true); }}
                             className='popup-closeButton w-4 h-4 flex justify-center items-center absolute top-[18px] right-2 rounded-full cursor-pointer'
                         >
                             <Image
