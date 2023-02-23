@@ -16,7 +16,7 @@ module.exports = {
         red: '#FF0000',
         border: '#D5D5D5',
         input: '#393f54cc',
-        taskCompleted: '#5d5d5d',
+        taskCompleted: '#777777',
         buttonClose: '#202124',
         cyan: '#57E6E6',
       },
