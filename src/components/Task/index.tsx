@@ -42,12 +42,12 @@ const Task = ({ task, taskPosition, setTaskPosition, updateTasks, editTask, dele
             <div className='max-w-[780px] w-full ml-4 mr-2 sm:mr-8 py-3 sm:py-3 text-justify break-words'>
                 <h1
                     className='text-2xl mb-2'
-                    style={ task.completed ? { textDecoration: 'line-through', color: '#1D1D1D' } : { textDecoration: 'none', color: '#00CC00' } }
+                    style={ task.completed ? { textDecoration: 'line-through', color: '#3c3c3c' } : { textDecoration: 'none', color: '#00CC00' } }
                 >
                     { task.title }
                 </h1>
                 <p
-                    style={ task.completed ? { textDecoration: 'line-through', color: '#1D1D1D' } : { textDecoration: 'none', color: '#FFFFFF' } }
+                    style={ task.completed ? { textDecoration: 'line-through', color: '#3c3c3c' } : { textDecoration: 'none', color: '#FFFFFF' } }
                 >
                     { task.description }
                 </p>
