@@ -5,9 +5,9 @@
 @tailwind utilities;
 
 body {
-    background-color: #000000;
-    font-family: 'Inter', sans-serif;
-    color: #FFFFFF;
+  background-color: #000;
+  font-family: 'Inter', sans-serif;
+  color: #FFFFFF;
 }
 
 ::-webkit-scrollbar {

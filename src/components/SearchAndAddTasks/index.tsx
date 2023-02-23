@@ -12,10 +12,10 @@ type Props = {
 const AddTask = ({ searchData, setSearchData, search, msgErrsearch, setPopupAdd }: Props) => {
     return (
         <div
-            className="max-w-[1000px] w-11/12 min-w-[300px] bg-background pt-1 py-6 sm:py-5 rounded-tr-default rounded-tl-default"
+            className="max-w-[1000px] w-11/12 min-w-[300px] bg-background pt-1 py-6 rounded-tr-default rounded-tl-default"
         >
-            <div className='sm:flex sm:justify-between'>
-                <div className="w-full flex flex-col ml-7 gap-1 relative">
+            <div className='flex justify-between mt-3'>
+                <div className="w-full flex flex-col mx-7 sm:mr-0 gap-1 relative">
                     <label
                         htmlFor="search"
                         className="text-xl"
@@ -24,11 +24,12 @@ const AddTask = ({ searchData, setSearchData, search, msgErrsearch, setPopupAdd 
                     </label>
 
                     <div className='w-full relative pt-2'>
-                        <textarea
+                        <input
                             id="search"
                             maxLength={100}
                             value={searchData}
                             onChange={e => setSearchData(e.target.value)}
+                            onKeyUp={e => { if (e.key === 'Enter') search(searchData) }}
                             autoComplete='off'
                             className="w-full h-9 pt-1 pl-2 pr-8 bg-input border-b-2 border-[#57E6E6] outline-none"
                         />
@@ -52,18 +53,18 @@ const AddTask = ({ searchData, setSearchData, search, msgErrsearch, setPopupAdd 
                     </div>
                 </div>
 
-                <div className='w-full flex justify-center sm:w-[150px] sm:block mt-8 sm:mt-9 sm:mx-10'>
+                <div className='hidden sm:block w-[150px] mt-10 mx-4 sm:mx-8 md:mx-10'>
                     <button
                         type="button"
                         onClick={() => search(searchData)}
-                        className="min-w-[150px] h-10 bg-green rounded-xl font-bold uppercase hover:bg-opacity-80 transition duration-300 active:scale-90"
+                        className="min-w-[100px] sm:min-w-[150px] h-8 sm:h-10 bg-green rounded-xl text-sm font-bold p-1 uppercase hover:bg-opacity-80 transition duration-300 active:scale-90"
                     >
                         Procurar
                     </button>
                 </div>
             </div>
 
-            <div className='flex justify-center mt-4'>
+            <div className='flex justify-center mt-6'>
                 <button
                     type="button"
                     onClick={() => setPopupAdd(true)}
