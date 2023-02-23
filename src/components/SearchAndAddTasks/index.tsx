@@ -45,13 +45,13 @@ const AddTask = ({ searchData, setSearchData, search, msgErrsearch, setPopupAdd,
 
                         <div
                             onClick={() => { setSearchData(''); updateTasks(true); }}
-                            className='popup-closeButton w-4 h-4 flex justify-center items-center absolute top-[18px] right-2 rounded-full cursor-pointer'
+                            className='popup-closeButton w-5 h-5 flex justify-center items-center absolute top-4 right-2 rounded-full cursor-pointer'
                         >
                             <Image
                                 src='/images/closePopup.png'
                                 alt='Button close pop-up'
-                                width={10}
-                                height={10}
+                                width={12}
+                                height={12}
                                 style={{ pointerEvents: 'none' }}
                             />
                         </div>
