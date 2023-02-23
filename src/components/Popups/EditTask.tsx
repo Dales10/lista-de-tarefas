@@ -2,6 +2,7 @@ import { useState, FormEvent, Dispatch, SetStateAction, MouseEvent } from 'react
 import Image from 'next/image';
 
 import { TaskProps } from '../../../@types/Task';
+import { useEffect } from 'react';
 
 type Props = {
     popupEdit: Dispatch<SetStateAction<boolean>>;
@@ -17,47 +18,30 @@ const PopupEditTask = ({ popupEdit, taskPosition, updateTasks }: Props) => {
     const [msgErrTitle, setMsgErrTitle] = useState('');
     const [description, setDescription] = useState(task.description);
     const [msgErrDescription, setMsgErrDescription] = useState('');
+    const [hasContent, setHasContent] = useState(true);
 
+    //Fará a validacação dos dados, e quando forem validos a tarefa será trocada pela nova corrigida.
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-
-        let validTitle = false;
-        let validDescription = false;
 
         setTitle(prevState => prevState.trim());
         setDescription(prevState => prevState.trim());
 
-        if (title.length <= 3) {
-            setMsgErrTitle('O título é obrigatório, e precisa ter mais que 3 caracteres e no máximo 50.')
-        } else {
-            setMsgErrTitle('');
-            validTitle = true;
-        }
+        popupEdit(false);
 
-        if (description.length <= 3) {
-            setMsgErrDescription('A descrição é obrigatório, e precisa ter mais que 3 caracteres e no máximo 1024.')
-        } else {
-            setMsgErrDescription('');
-            validDescription = true;
-        }
-
-        if (validTitle && validDescription) {
-            popupEdit(false);
-
-            const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
-            tasks.splice(taskPosition, 1, {
-                title,
-                description,
-                completed: false,
-            });
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-            setTitle('');
-            setDescription('');
-            updateTasks();
-        }
+        const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+        tasks.splice(taskPosition, 1, {
+            title,
+            description,
+            completed: false,
+        });
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        setTitle('');
+        setDescription('');
+        updateTasks();
     };
 
-
+    //Verifica se o que foi clicado era o botão de fechar, ou foi fora da popup para fechar a mesma.
     const handleClick = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
         const tagNameElement = (e.target as Element).classList[0];
         const closePopup = ['popup-wrapper', 'popup-closeButton'].some(name => {
@@ -67,6 +51,29 @@ const PopupEditTask = ({ popupEdit, taskPosition, updateTasks }: Props) => {
         if (closePopup)
             popupEdit(false);
     };
+
+    const validateTitleData = () => {
+        if (title.length <= 3)
+            setMsgErrTitle('O título é obrigatório, e precisa ter mais que 3 caracteres e no máximo 50.');
+        else
+            setMsgErrTitle('');
+    }
+
+    const validateDescriptionData = () => {
+        if (description.length <= 3)
+            setMsgErrDescription('A descrição é obrigatório, e precisa ter mais que 3 caracteres e no máximo 1024.');
+        else
+            setMsgErrDescription('');
+    }
+
+    useEffect(() => {
+        const validData = title.trim().length > 3 && description.trim().length > 3;
+        const differentData = task.title !== title || task.description !== description;
+        if (validData && differentData)
+            setHasContent(false);
+        else
+            setHasContent(true);
+    }, [title, description]);
 
     return (
         <div
@@ -80,7 +87,7 @@ const PopupEditTask = ({ popupEdit, taskPosition, updateTasks }: Props) => {
             >
                 <div
                     onClick={e => handleClick(e)}
-                    className='popup-closeButton w-7 h-7 flex justify-center items-center absolute top-4 right-4 bg-white rounded-full'
+                    className='popup-closeButton w-7 h-7 flex justify-center items-center absolute top-4 right-4 bg-buttonClose hover:bg-opacity-70 rounded-full cursor-pointer transition duration-300'
                 >
                     <Image
                         src='/images/closePopup.png'
@@ -102,15 +109,19 @@ const PopupEditTask = ({ popupEdit, taskPosition, updateTasks }: Props) => {
                     >
                         Título:
                     </label>
+
                     <input
                         type="text"
                         id='editTitle'
+                        autoComplete='off'
                         value={title}
                         onChange={e => setTitle(e.target.value)}
+                        onBlur={validateTitleData}
                         className='w-11/12 h-9 pl-2 bg-input border-b-2 border-[#57E6E6] outline-none'
                     />
-                    <span className='w-11/12 mt-2 text-red text-xs'>
-                        {msgErrTitle}
+
+                    <span className='w-11/12 text-red text-xs mt-2'>
+                        { msgErrTitle }
                     </span>
                 </div>
 
@@ -121,23 +132,27 @@ const PopupEditTask = ({ popupEdit, taskPosition, updateTasks }: Props) => {
                     >
                         Descrição:
                     </label>
+
                     <textarea
                         id="editDescription"
                         maxLength={1024}
                         autoComplete='off'
                         value={description}
                         onChange={e => setDescription(e.target.value)}
+                        onBlur={validateDescriptionData}
                         className='w-11/12 max-h-40 pt-1 pl-2 bg-input border-b-2 border-[#57E6E6] outline-none'
                     />
-                    <span className='w-11/12 mt-2 text-red text-xs'>
-                        {msgErrDescription}
+
+                    <span className='w-11/12 text-red text-xs mt-2'>
+                        { msgErrDescription }
                     </span>
                 </div>
 
                 <div className='w-full flex justify-center'>
                     <button
                         type="submit"
-                        className="w-[250px] h-12 bg-green rounded-xl font-bold uppercase hover:bg-opacity-80 my-14"
+                        disabled={hasContent}
+                        className="w-[250px] h-12 bg-green hover:bg-opacity-80 rounded-xl font-bold my-14 uppercase transition duration-300 active:scale-90 disabled:scale-100 disabled:bg-buttonClose disabled:text-[#606060] disabled:cursor-not-allowed"
                     >
                         Salvar
                     </button>

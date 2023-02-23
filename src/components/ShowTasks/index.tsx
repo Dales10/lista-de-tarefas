@@ -16,6 +16,15 @@ const ShowTasks = ({ tasks, setTaskPosition, updateTasks, editTask, deleteTask }
         <div className="max-w-[1000px] w-11/12 min-w-[300px] flex flex-col justify-center items-center gap-3 py-9 px-4 bg-background rounded-br-default rounded-bl-default">
             {
                 tasks.map((task, index) => {
+                    const databaseTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+                    let taskPosition = 0;
+                    for (let position = 0; position < databaseTasks.length; position++) {
+                        if (JSON.stringify(task) === JSON.stringify(databaseTasks[position])) {
+                            taskPosition = position;
+                            break;
+                        }
+                    }
+
                     return (
                         <div
                             key={index}
@@ -23,7 +32,7 @@ const ShowTasks = ({ tasks, setTaskPosition, updateTasks, editTask, deleteTask }
                         >
                             <Task
                                 task={task}
-                                taskPosition={index}
+                                taskPosition={taskPosition}
                                 setTaskPosition={setTaskPosition}
                                 updateTasks={updateTasks}
                                 editTask={editTask}

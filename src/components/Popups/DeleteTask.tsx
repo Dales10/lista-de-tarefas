@@ -20,6 +20,7 @@ const PopupDeleteTask = ({ popupDelete, taskPosition, updateTasks }: Props) => {
         updateTasks();
     };
 
+    //Verifica se o que foi clicado era o botão de fechar, ou foi fora da popup para fechar a mesma.
     const handleClick = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent> | FormEvent) => {
         const tagNameElement = (e.target as Element).classList[0];
         const closePopup = ['popup-wrapper', 'popup-closeButton', 'popup-deleteButton'].some(name => {
@@ -36,10 +37,10 @@ const PopupDeleteTask = ({ popupDelete, taskPosition, updateTasks }: Props) => {
             onClick={e => handleClick(e)}
             className="popup-wrapper w-screen h-screen flex justify-center items-center absolute left-0 bg-black bg-opacity-50"
         >
-            <div className="max-w-[600px] w-[90%]  relative bg-background m-auto border-b border-[#57E6E6] rounded-default">
+            <div className="max-w-[600px] w-[90%] relative bg-background m-auto border-b border-[#57E6E6] rounded-default">
                 <div
                     onClick={e => handleClick(e)}
-                    className='popup-closeButton flex justify-center items-center absolute top-4 right-4 bg-white rounded-full w-7 h-7'
+                    className='popup-closeButton w-7 h-7 flex justify-center items-center absolute top-4 right-4 bg-buttonClose hover:bg-opacity-70 rounded-full cursor-pointer transition duration-300'
                 >
                     <Image
                         src='/images/closePopup.png'
@@ -64,7 +65,7 @@ const PopupDeleteTask = ({ popupDelete, taskPosition, updateTasks }: Props) => {
                 </div>
 
                 <div className="w-[calc(100% - 56px)] mt-8 mx-7 py-2 border border-border rounded-md">
-                    <div className='flex flex-col ml-3 text-xs'>
+                    <div className='flex flex-col text-xs ml-3'>
                         <h1 className='text-green text-xl mb-2'>
                             { task.title }
                         </h1>
@@ -79,7 +80,7 @@ const PopupDeleteTask = ({ popupDelete, taskPosition, updateTasks }: Props) => {
                     <button
                         type="submit"
                         onClick={e => { handleClick(e); DeleteTask() }}
-                        className="popup-deleteButton w-[250px] h-12 bg-red rounded-xl font-bold uppercase hover:bg-opacity-80 my-14"
+                        className="popup-deleteButton w-60 h-12 bg-red hover:bg-opacity-80 rounded-xl font-bold my-14 uppercase transition duration-300 active:scale-90"
                     >
                         Deletar
                     </button>

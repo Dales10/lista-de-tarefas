@@ -1,5 +1,6 @@
 import { useState, FormEvent, Dispatch, SetStateAction, MouseEvent } from 'react';
 import Image from 'next/image';
+import { useEffect } from 'react';
 
 type Props = {
     popupAdd: Dispatch<SetStateAction<boolean>>;
@@ -13,48 +14,31 @@ const PopupAddTask = ({ popupAdd, updateTasks }: Props) => {
     const [msgErrTitle, setMsgErrTitle] = useState('');
     const [description, setDescription] = useState('');
     const [msgErrDescription, setMsgErrDescription] = useState('');
+    const [hasContent, setHasContent] = useState(true);
 
     //Fará a validacação dos dados, e quando forem validos serão guardados.
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
 
-        let validTitle = false;
-        let validDescription = false;
-
         setTitle(prevState => prevState.trim());
         setDescription(prevState => prevState.trim());
 
-        if (title.length <= 3) {
-            setMsgErrTitle('O título é obrigatório, e precisa ter mais que 3 caracteres e no máximo 50.')
-        } else {
-            setMsgErrTitle('');
-            validTitle = true;
-        }
-
-        if (description.length <= 3) {
-            setMsgErrDescription('A descrição é obrigatório, e precisa ter mais que 3 caracteres e no máximo 1024.')
-        } else {
-            setMsgErrDescription('');
-            validDescription = true;
-        }
-
         //Adiciona os dados em formato de objeto no localstorage, e limpa os useState.
-        if (validTitle && validDescription) {
-            popupAdd(false);
+        popupAdd(false);
 
-            const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
-            tasks.push({
-                title,
-                description,
-                completed: false,
-            });
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-            setTitle('');
-            setDescription('');
-            updateTasks();
-        }
+        const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+        tasks.push({
+            title,
+            description,
+            completed: false,
+        });
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        setTitle('');
+        setDescription('');
+        updateTasks();
     };
 
+    //Verifica se o que foi clicado era o botão de fechar, ou foi fora da popup para fechar a mesma.
     const handleClick = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
         const tagNameElement = (e.target as Element).classList[0];
         const closePopup = ['popup-wrapper', 'popup-closeButton'].some(name => {
@@ -64,6 +48,28 @@ const PopupAddTask = ({ popupAdd, updateTasks }: Props) => {
         if (closePopup)
             popupAdd(false);
     };
+
+    const validateTitleData = () => {
+        if (title.length <= 3)
+            setMsgErrTitle('O título é obrigatório, e precisa ter mais que 3 caracteres e no máximo 50.');
+        else
+            setMsgErrTitle('');
+    }
+
+    const validateDescriptionData = () => {
+        if (description.length <= 3)
+            setMsgErrDescription('A descrição é obrigatório, e precisa ter mais que 3 caracteres e no máximo 1024.');
+        else
+            setMsgErrDescription('');
+    }
+
+    useEffect(() => {
+        if (title.trim().length> 3 && description.trim().length > 3) {
+            setHasContent(false);
+        } else {
+            setHasContent(true);
+        }
+    }, [title, description]);
 
     return (
 
@@ -79,7 +85,7 @@ const PopupAddTask = ({ popupAdd, updateTasks }: Props) => {
             >
                 <div
                     onClick={e => handleClick(e)}
-                    className='popup-closeButton w-7 h-7 flex justify-center items-center absolute top-4 right-4 bg-white rounded-full'
+                    className='popup-closeButton w-7 h-7 flex justify-center items-center absolute top-4 right-4 bg-buttonClose hover:bg-opacity-70 rounded-full cursor-pointer transition duration-300'
                 >
                     <Image
                         src='/images/closePopup.png'
@@ -101,15 +107,19 @@ const PopupAddTask = ({ popupAdd, updateTasks }: Props) => {
                     >
                         Título:
                     </label>
+
                     <input
                         type="text"
                         id='editTitle'
+                        autoComplete='off'
                         value={title}
                         onChange={e => setTitle(e.target.value)}
+                        onBlur={validateTitleData}
                         className='w-11/12 h-9 pl-2 bg-input border-b-2 border-[#57E6E6] outline-none'
                     />
-                    <span className='w-11/12 mt-2 text-red text-xs'>
-                        {msgErrTitle}
+
+                    <span className='w-11/12 text-red text-xs mt-2'>
+                        { msgErrTitle }
                     </span>
                 </div>
 
@@ -120,23 +130,27 @@ const PopupAddTask = ({ popupAdd, updateTasks }: Props) => {
                     >
                         Descrição:
                     </label>
+
                     <textarea
                         id="editDescription"
                         maxLength={1024}
                         autoComplete='off'
                         value={description}
                         onChange={e => setDescription(e.target.value)}
-                        className='w-11/12 max-h-9 pt-1 pl-2 bg-input border-b-2 border-[#57E6E6] outline-none'
+                        onBlur={validateDescriptionData}
+                        className='w-11/12 max-h-9 bg-input pt-1 pl-2 border-b-2 border-cyan outline-none'
                     />
-                    <span className='w-11/12 mt-2 text-red text-xs'>
-                        {msgErrDescription}
+
+                    <span className='w-11/12 text-red text-xs mt-2'>
+                        { msgErrDescription }
                     </span>
                 </div>
 
                 <div className='w-full flex justify-center'>
                     <button
                         type="submit"
-                        className="w-[250px] h-12 bg-green rounded-xl font-bold uppercase hover:bg-opacity-80 my-14"
+                        disabled={hasContent}
+                        className="w-60 h-12 bg-green hover:bg-opacity-80 rounded-xl font-bold my-14 uppercase transition duration-300 active:scale-90 disabled:scale-100 disabled:bg-buttonClose disabled:text-[#606060] disabled:cursor-not-allowed"
                     >
                         Adicionar
                     </button>

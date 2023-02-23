@@ -13,6 +13,7 @@ type Props = {
 }
 
 const Task = ({ task, taskPosition, setTaskPosition, updateTasks, editTask, deleteTask }: Props) => {
+
     const changeTaskState = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
         const tagNameElement = (e.target as Element).classList[0];
 
@@ -36,7 +37,7 @@ const Task = ({ task, taskPosition, setTaskPosition, updateTasks, editTask, dele
     return (
         <div
             onClick={e => changeTaskState(e)}
-            className="max-w-[950px] w-full flex justify-between items-center m-auto border border-border rounded-default"
+            className="max-w-[950px] w-full flex justify-between items-center m-auto border border-border rounded-default cursor-pointer hover:bg-[#0f1118] transition duration-300 active:scale-95"
         >
             <div className='max-w-[780px] w-full ml-4 mr-2 sm:mr-8 py-3 sm:py-3 text-justify break-words'>
                 <h1
@@ -57,7 +58,7 @@ const Task = ({ task, taskPosition, setTaskPosition, updateTasks, editTask, dele
                 <button
                     type='button'
                     onClick={() => { editTask(true); setTaskPosition(taskPosition) }}
-                    className='editButton w-[44px] h-[44px] flex justify-center items-center bg-green rounded-[14px] hover:bg-opacity-80'
+                    className='editButton w-[44px] h-[44px] flex justify-center items-center bg-green rounded-[14px] hover:bg-opacity-80 transition duration-300 active:scale-90'
                 >
                     <Image
                         src='/images/editTask.png'
@@ -72,7 +73,7 @@ const Task = ({ task, taskPosition, setTaskPosition, updateTasks, editTask, dele
                 <button
                     type='button'
                     onClick={() => { deleteTask(true); setTaskPosition(taskPosition) }}
-                    className='deleteButton w-[44px] h-[44px] flex justify-center items-center bg-red rounded-[14px] hover:bg-opacity-80'
+                    className='deleteButton w-[44px] h-[44px] flex justify-center items-center bg-red rounded-[14px] hover:bg-opacity-80 transition duration-300 active:scale-90'
                 >
                     <Image
                         src='/images/deleteTask.png'
