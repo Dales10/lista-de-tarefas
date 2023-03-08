@@ -37,10 +37,10 @@ const PopupDeleteTask = ({ popupDelete, taskPosition, updateTasks }: Props) => {
             onClick={e => handleClick(e)}
             className="popup-wrapper w-screen h-screen flex justify-center items-center absolute left-0 bg-black bg-opacity-50"
         >
-            <div className="max-w-[600px] w-[90%] relative bg-background m-auto border-b border-[#57E6E6] rounded-default">
+            <div className="max-w-[600px] w-[90%] relative bg-background m-auto border-b border-cyan rounded-default">
                 <div
                     onClick={e => handleClick(e)}
-                    className='popup-closeButton w-7 h-7 flex justify-center items-center absolute top-4 right-4 bg-buttonClose hover:bg-opacity-70 rounded-full cursor-pointer transition duration-300'
+                    className='popup-closeButton w-7 h-7 flex justify-center items-center absolute top-4 right-4 bg-darkGrey hover:bg-opacity-70 rounded-full cursor-pointer transition duration-300'
                 >
                     <Image
                         src='/images/closePopup.png'

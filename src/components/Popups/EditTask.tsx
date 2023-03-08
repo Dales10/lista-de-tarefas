@@ -83,11 +83,11 @@ const PopupEditTask = ({ popupEdit, taskPosition, updateTasks }: Props) => {
         >
             <form
                 onSubmit={e => handleSubmit(e)}
-                className="max-w-[600px] w-[90%] relative bg-background m-auto border-b border-[#57E6E6] rounded-default"
+                className="max-w-[600px] w-[90%] relative bg-background m-auto border-b border-cyan rounded-default"
             >
                 <div
                     onClick={e => handleClick(e)}
-                    className='popup-closeButton w-7 h-7 flex justify-center items-center absolute top-4 right-4 bg-buttonClose hover:bg-opacity-70 rounded-full cursor-pointer transition duration-300'
+                    className='popup-closeButton w-7 h-7 flex justify-center items-center absolute top-4 right-4 bg-darkGrey hover:bg-opacity-70 rounded-full cursor-pointer transition duration-300'
                 >
                     <Image
                         src='/images/closePopup.png'
@@ -117,7 +117,7 @@ const PopupEditTask = ({ popupEdit, taskPosition, updateTasks }: Props) => {
                         value={title}
                         onChange={e => setTitle(e.target.value)}
                         onBlur={validateTitleData}
-                        className='w-11/12 h-9 pl-2 bg-input border-b-2 border-[#57E6E6] outline-none'
+                        className='w-11/12 h-9 pl-2 bg-input border-b-2 border-darkGrey focus:border-cyan transition duration-300" outline-none'
                     />
 
                     <span className='w-11/12 text-red text-xs mt-2'>
@@ -140,7 +140,7 @@ const PopupEditTask = ({ popupEdit, taskPosition, updateTasks }: Props) => {
                         value={description}
                         onChange={e => setDescription(e.target.value)}
                         onBlur={validateDescriptionData}
-                        className='w-11/12 max-h-40 pt-1 pl-2 bg-input border-b-2 border-[#57E6E6] outline-none'
+                        className='w-11/12 max-h-40 pt-1 pl-2 bg-input border-b-2 border-darkGrey focus:border-cyan transition duration-300 outline-none'
                     />
 
                     <span className='w-11/12 text-red text-xs mt-2'>
@@ -152,7 +152,7 @@ const PopupEditTask = ({ popupEdit, taskPosition, updateTasks }: Props) => {
                     <button
                         type="submit"
                         disabled={hasContent}
-                        className="w-[250px] h-12 bg-green hover:bg-opacity-80 rounded-xl font-bold my-14 uppercase transition duration-300 active:scale-90 disabled:scale-100 disabled:bg-buttonClose disabled:text-[#606060] disabled:cursor-not-allowed"
+                        className="w-[250px] h-12 bg-green hover:bg-opacity-80 rounded-xl font-bold my-14 uppercase transition duration-300 active:scale-90 disabled:scale-100 disabled:bg-darkGrey disabled:text-[#606060] disabled:cursor-not-allowed"
                     >
                         Salvar
                     </button>

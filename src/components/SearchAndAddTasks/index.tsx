@@ -1,4 +1,4 @@
-import { Dispatch, RefObject, SetStateAction, useRef } from 'react';
+import { Dispatch, SetStateAction, useRef } from 'react';
 import Image from 'next/image';
 
 type Props = {
@@ -17,7 +17,7 @@ const AddTask = ({ searchData, setSearchData, search, msgErrsearch, setPopupAdd,
         if (searchInput.current !== null)
             searchInput.current.blur();
     }
-
+    console.log('oi')
     return (
         <div
             className="max-w-[1000px] w-11/12 min-w-[300px] bg-background pt-1 py-6 rounded-tr-default rounded-tl-default"
@@ -40,7 +40,7 @@ const AddTask = ({ searchData, setSearchData, search, msgErrsearch, setPopupAdd,
                             onKeyUp={e => { if (e.key === 'Enter') { search(searchData); removeFocus() } }}
                             autoComplete='off'
                             ref={searchInput}
-                            className="w-full h-9 pt-1 pl-2 pr-8 bg-input border-b-2 border-[#57E6E6] outline-none"
+                            className="w-full h-9 pt-1 pl-2 pr-8 bg-input border-b-2 border-darkGrey focus:border-cyan transition duration-300 outline-none"
                         />
 
                         <div
