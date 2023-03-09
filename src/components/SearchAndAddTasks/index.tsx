@@ -17,7 +17,7 @@ const AddTask = ({ searchData, setSearchData, search, msgErrsearch, setPopupAdd,
         if (searchInput.current !== null)
             searchInput.current.blur();
     }
-    console.log('oi')
+    
     return (
         <div
             className="max-w-[1000px] w-11/12 min-w-[300px] bg-background pt-1 py-6 rounded-tr-default rounded-tl-default"

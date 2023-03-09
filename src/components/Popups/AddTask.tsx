@@ -12,24 +12,25 @@ const PopupAddTask = ({ popupAdd, updateTasks }: Props) => {
 
     const [title, setTitle] = useState('');
     const [msgErrTitle, setMsgErrTitle] = useState('');
+    const [styleInputTitle, setStyleInputTitle] = useState({ borderColor: '#202124' });
     const [description, setDescription] = useState('');
     const [msgErrDescription, setMsgErrDescription] = useState('');
+    const [styleInputDescription, setStyleInputDescription] = useState({ borderColor: '#202124' });
     const [hasContent, setHasContent] = useState(true);
 
     //Fará a validacação dos dados, e quando forem validos serão guardados.
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
 
-        setTitle(prevState => prevState.trim());
-        setDescription(prevState => prevState.trim());
-
-        //Adiciona os dados em formato de objeto no localstorage, e limpa os useState.
         popupAdd(false);
 
+        //Adiciona os dados em formato de objeto no localstorage, e limpa os useState.
         const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+        const formattedTitle = title.trim();
+        const formattedDescription = description.trim();
         tasks.push({
-            title,
-            description,
+            title: formattedTitle,
+            description: formattedDescription,
             completed: false,
         });
         localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -50,26 +51,44 @@ const PopupAddTask = ({ popupAdd, updateTasks }: Props) => {
     };
 
     const validateTitleData = () => {
-        if (title.length <= 3)
+        if (title.length <= 3) {
             setMsgErrTitle('O título é obrigatório, e precisa ter mais que 3 caracteres e no máximo 50.');
-        else
+            setStyleInputTitle({ borderColor: '#ff0000'});
+        } else {
             setMsgErrTitle('');
-    }
+            setStyleInputTitle({ borderColor: '#57E6E6'});
+        }
+    };
+
+    const handleStyleInputTitle = () => {
+        if (!msgErrTitle.length)
+            setStyleInputTitle({ borderColor: '#57E6E6'});
+    };
 
     const validateDescriptionData = () => {
-        if (description.length <= 3)
+        if (description.length <= 3) {
             setMsgErrDescription('A descrição é obrigatório, e precisa ter mais que 3 caracteres e no máximo 1024.');
-        else
+            setStyleInputDescription({ borderColor: '#ff0000'});
+        } else {
             setMsgErrDescription('');
+            setStyleInputDescription({ borderColor: '#57E6E6'});
+        }
     }
 
+    const handleStyleInputDescription = () => {
+        if (!msgErrDescription.length)
+            setStyleInputDescription({ borderColor: '#57E6E6'});
+    };
+
     useEffect(() => {
-        if (title.length > 0 || description.length > 0) {
-            if (title.trim().length > 3 && description.trim().length > 3) {
+        if (title.length || description.length) {
+            validateTitleData();
+            validateDescriptionData();
+
+            if (title.trim().length > 3 && description.trim().length > 3)
                 setHasContent(false);
-            } else {
+            else
                 setHasContent(true);
-            }
         }
     }, [title, description]);
 
@@ -113,9 +132,11 @@ const PopupAddTask = ({ popupAdd, updateTasks }: Props) => {
                     <input
                         type="text"
                         id='editTitle'
+                        style={styleInputTitle}
                         autoComplete='off'
                         value={title}
                         onChange={e => setTitle(e.target.value)}
+                        onFocus={handleStyleInputTitle}
                         onBlur={validateTitleData}
                         className='w-11/12 h-9 pl-2 bg-input border-b-2 border-darkGrey focus:border-cyan transition duration-300 outline-none'
                     />
@@ -135,12 +156,14 @@ const PopupAddTask = ({ popupAdd, updateTasks }: Props) => {
 
                     <textarea
                         id="editDescription"
+                        style={styleInputDescription}
                         maxLength={1024}
                         autoComplete='off'
                         value={description}
                         onChange={e => setDescription(e.target.value)}
+                        onFocus={handleStyleInputDescription}
                         onBlur={validateDescriptionData}
-                        className='w-11/12 max-h-9 bg-input pt-1 pl-2 border-b-2 border-darkGrey focus:border-cyan valid:border-cyan transition duration-300 outline-none'
+                        className='w-11/12 max-h-9 bg-input pt-1 pl-2 border-b-2 border-darkGrey focus:border-cyan  transition duration-300 outline-none'
                     />
 
                     <span className='w-11/12 text-red text-xs mt-2'>
